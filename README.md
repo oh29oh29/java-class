@@ -86,6 +86,121 @@ Method identifier 와 Parameter list
 Method identifier 는 같지만 Parameter list 가 서로 다른 두 개 이상의 메서드를 정의할 수 있다.  
 즉, Method Signature 가 다른 메서드이다.  
 
+## 생성자
+
+#### A No-Argument Constructor
+
+```java
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+class BankAccount {
+    private String name;
+    private BigDecimal balance;
+    private LocalDateTime opened;
+
+    public BankAccount() {
+        this.name = "";
+        this.balance = 0;
+        this.opened = LocalDateTime.now();
+    }
+}
+```
+
+위에 작성한 생성자에 대해서 몇 가지 짚고 넘어가야 하는게 있다.  
+첫째, 위의 생성자는 메서드이지만 return type 이 없다. 생성자는 생성한 객체를 묵시적으로 반환하기 때문이다.  
+둘째, arguments 를 받지 않는다.  
+우리는 이것을 arguments 가 없는 생성자라고 한다.  
+
+생성자를 명시적으로 작성하지 않으면 컴파일러가 arguments 가 없는 기본 생성자를 추가한다.  
+이것이 명시적으로 생성자를 작성하지 않았음에도 객체를 생성할 수 있었던 이유이다.  
+
+#### A Parameterized Constructor
+
+```java
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+class BankAccount {
+    private String name;
+    private BigDecimal balance;
+    private LocalDateTime opened;
+
+    public BankAccount(String name, BigDecimal balance, LocalDateTime opened) {
+        this.name = name;
+        this.balance = balance;
+        this.opened = opened;
+    }
+}
+```
+
+위 코드는 arguments 를 받는 생성자를 명시적으로 작성한 것이다.  
+
+```java
+BankAccount account = new BankAccount("Hyukjae", BigDecimal.valueOf(10000), LocalDateTime.now());
+```
+
+이렇게 명시적으로 생성자를 하나라도 작성했다면, 컴파일러는 arguments 가 없는 기본 생성자를 추가하지 않는다.  
+
+#### A Copy Constructor
+
+```java
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+class BankAccount {
+    private String name;
+    private BigDecimal balance;
+    private LocalDateTime opened;
+
+    public BankAccount(String name, BigDecimal balance, LocalDateTime opened) {
+        this.name = name;
+        this.balance = balance;
+        this.opened = opened;
+    }
+    
+    public BankAccount(BankAccount other) {
+        this.name = other.name;
+        this.balance = other.balance;
+        this.opened = other.opened;
+    }
+}
+```
+
+위 코드는 arguments 로 동일한 클래스를 받는 생성자를 추가한 것이다.
+
+```java
+BankAccount other = new BankAccount("Hyukjae", BigDecimal.valueOf(10000), LocalDateTime.now());
+BankAccount account = new BankAccount(other);
+```
+
+#### A Chained Constructor
+
+```java
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+class BankAccount {
+    private String name;
+    private BigDecimal balance;
+    private LocalDateTime opened;
+
+    public BankAccount(String name, BigDecimal balance, LocalDateTime opened) {
+        this.name = name;
+        this.balance = balance;
+        this.opened = opened;
+    }
+    
+    public BankAccount(String name) {
+        this(name, BigDecimal.valueOf(10000), LocalDateTime.now());
+    }
+}
+```
+
+위 코드는 arguments 로 일부 값만 받아 나머지는 추론하거나 기본값을 제공할 수 있는 생성자를 추가한 것이다.
+만약 부모 클래스 생성자를 연결하려면 this 키워드 대신 super 키워드를 사용해야 한다.  
+또한, this 또는 super 키워드는 항상 첫번째로 호출되어야 한다.  
+
 
 <hr>
 
@@ -97,3 +212,4 @@ Method identifier 는 같지만 Parameter list 가 서로 다른 두 개 이상�
 > - [Baeldung | A Guide to Creating Objects in Java](https://www.baeldung.com/java-initialization)
 > - [Baeldung | Guide to the this Java Keyword](https://www.baeldung.com/java-this)
 > - [Baeldung | Methods in Java](https://www.baeldung.com/java-methods)
+> - [Baeldung | A Guide to Constructors in Java](https://www.baeldung.com/java-constructors)
