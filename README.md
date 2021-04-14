@@ -73,17 +73,17 @@ public String getName(String firstName, String lastName) throws RuntimeException
 ```
 
 ##### 여기서 새롭게 알게 된 사실  
-1. Method identifier 은 최대 65536자 까지 정할 수 있다는 것이다.
-2. Parameter list 는 쉼표로 구분하며 0 개에서 최대 255 개를 가질 수 있다.  
+1. 메서드 명은 최대 65536자 까지 정할 수 있다는 것이다.
+2. 파라미터 목록은 쉼표로 구분하며 0 개에서 최대 255 개를 가질 수 있다.  
 
 ### Method Signature
 
 Method Signature 는 두 가지 요소로만 구성된다.  
-Method identifier 와 Parameter list
+메서드 명과 파라미터 목록이다.
 
 ### Method Overloading
 
-Method identifier 는 같지만 Parameter list 가 서로 다른 두 개 이상의 메서드를 정의할 수 있다.  
+메서드 명은 같지만 파라미터 목록이 서로 다른 두 개 이상의 메서드를 정의할 수 있다.  
 즉, Method Signature 가 다른 메서드이다.  
 
 ## 생성자
@@ -201,6 +201,69 @@ class BankAccount {
 만약 부모 클래스 생성자를 연결하려면 this 키워드 대신 super 키워드를 사용해야 한다.  
 또한, this 또는 super 키워드는 항상 첫번째로 호출되어야 한다.  
 
+## this 키워드
+
+this 키워드는 메서드가 호출되는 현재 객체에 대한 참조이다.  
+
+#### Disambiguating Field Shadowing
+
+인스턴스 변수들을 좀 더 명확하게 나타내는데 유용하다.  
+가장 일반적인 경우는 인스턴스 변수와 이름이 같은 생성자의 argument 가 있는 경우이다.  
+
+```java
+public class KeywordThisStudy {
+    private String name;
+    private int age;
+    
+    public KeywordThisStudy(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+```
+
+#### Referencing Constructors of the Same Class
+
+생성자에서 this() 를 호출하여 동일한 클래스의 다른 생성자를 호출할 수 있다.  
+가장 일반적인 경우는 argument 를 적게 갖고 있는 생성자에서 많이 갖고 있는 생성자를 호출하는 경우이다.     
+
+```java
+public class KeywordThisStudy {
+    private String name;
+    private int age;
+
+    public KeywordThisStudy() {
+        this("Hyukjae", 33);
+    }
+    
+    public KeywordThisStudy(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+```
+
+#### Passing this as a Parameter
+
+```java
+public class KeywordThisStudy {
+    private String name;
+    private int age;
+
+    public KeywordThisStudy() {
+        printInstance(this);
+    }
+    
+    public void printInstance(KeywordThisStudy instance) {
+        System.out.println(instance);
+    }
+}
+```
+
+#### Returning this
+
+메서드에서 현재 클래스의 인스턴스를 반환할 수도 있다.  
+Builder 디자인 패턴에서 확인할 수 있는데, 이건 추후 디자인 패턴을 공부하면 볼 수 있다.  
 
 <hr>
 
